@@ -28,7 +28,7 @@ with open('requirements.txt') as f:
     INSTALL_REQUIRES = f.read().splitlines()
 
 CONFIG = {
-    'name': 'pywps',
+    'name': 'pywps_json',
     'version': VERSION,
     'description': DESCRIPTION,
     'long_description': LONG_DESCRIPTION,
@@ -38,8 +38,8 @@ CONFIG = {
     'platforms': 'all',
     'author': 'Jachym Cepicky',
     'author_email': 'jachym.cepicky@gmail.com',
-    'maintainer': 'Jachym Cepicky',
-    'maintainer_email': 'jachym.cepicky@gmail.com',
+    'maintainer': 'Idan Miara',
+    'maintainer_email': 'idan@miara.com',
     'url': 'https://pywps.org',
     'download_url': 'https://github.com/geopython/pywps',
     'classifiers': [
