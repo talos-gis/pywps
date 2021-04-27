@@ -230,16 +230,19 @@ class ExecuteResponse(WPSResponse):
                 if wps_output_value.source_type is None:
                     return NoApplicableCode("Expected output was not generated")
                 data = wps_output_value.data
-                if mimetype is None:
-                    mimetype = self.wps_request.outputs[wps_output_identifier].get('mimetype', None)
-                if mimetype == '':
+                if isinstance(data, bytes):
                     mimetype = None
-                json_response = json_response or (mimetype is not None and 'json' in mimetype)
-                if json_response:
-                    mimetype = 'application/json'
-                    data = json.dumps(data, cls=NumpyArrayEncoder, indent=get_json_indent())
                 else:
-                    data = str(data)
+                    if mimetype is None:
+                        mimetype = self.wps_request.outputs[wps_output_identifier].get('mimetype', None)
+                    if mimetype == '':
+                        mimetype = None
+                    json_response = json_response or (mimetype is not None and 'json' in mimetype)
+                    if json_response:
+                        mimetype = 'application/json'
+                        data = json.dumps(data, cls=NumpyArrayEncoder, indent=get_json_indent())
+                    else:
+                        data = str(data)
                 return Response(data, mimetype=mimetype)
         else:
             if not self.doc:
