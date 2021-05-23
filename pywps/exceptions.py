@@ -17,7 +17,6 @@ from werkzeug.datastructures import MIMEAccept
 from werkzeug.http import parse_accept_header
 from werkzeug.wrappers import Response
 from werkzeug.exceptions import HTTPException
-from werkzeug._compat import text_type
 from werkzeug.utils import escape
 
 import logging
@@ -79,7 +78,7 @@ class NoApplicableCode(HTTPException):
         if json_response:
             doc = json.dumps(args, indent=get_json_indent())
         else:
-            doc = text_type((
+            doc = (
                 u'<?xml version="1.0" encoding="UTF-8"?>\n'
                 u'<!-- PyWPS {version} -->\n'
                 u'<ows:ExceptionReport xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/ows/1.1 http://schemas.opengis.net/ows/1.1.0/owsExceptionReport.xsd" version="1.0.0">\n'  # noqa
@@ -87,7 +86,7 @@ class NoApplicableCode(HTTPException):
                 u'      <ows:ExceptionText>{description}</ows:ExceptionText>\n'
                 u'  </ows:Exception>\n'
                 u'</ows:ExceptionReport>'
-            ).format(**args))
+            ).format(**args)
 
         return Response(doc, self.code, mimetype=mimetype)
 
@@ -147,14 +146,14 @@ class ServerBusy(NoApplicableCode):
             'name': escape(self.name),
             'description': self.get_description(environ)
         }
-        return text_type((
+        return (
             u'<?xml version="1.0" encoding="UTF-8"?>\n'
             u'<ows:ExceptionReport xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/ows/1.1 ../../../ows/1.1.0/owsExceptionReport.xsd" version="1.0.0">'  # noqa
             u'<ows:Exception exceptionCode="{name}">'
             u'{description}'
             u'</ows:Exception>'
             u'</ows:ExceptionReport>'
-        ).format(**args))
+        ).format(**args)
 
 
 class FileURLNotSupported(NoApplicableCode):
