@@ -5,4 +5,4 @@ owslib
 python-dateutil
 requests
 SQLAlchemy
-werkzeug<=2
+werkzeug
