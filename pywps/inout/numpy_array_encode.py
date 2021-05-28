@@ -1,4 +1,5 @@
 from json import JSONEncoder
+import array
 
 numpy_available = True
 try:
@@ -9,6 +10,6 @@ except (ImportError, AttributeError):
 
 class NumpyArrayEncoder(JSONEncoder):
     def default(self, obj):
-        if numpy_available and isinstance(obj, numpy.ndarray):
+        if isinstance(obj, array.array) or (numpy_available and isinstance(obj, numpy.ndarray)):
             return obj.tolist()
         return JSONEncoder.default(self, obj)
